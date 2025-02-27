@@ -45,8 +45,11 @@ SELECT r.race,
 FROM race_count r
 JOIN pay_count p ON r.race = p.race
 ORDER BY payers_share desc;
+
 -- Задача 2. Исследование внутриигровых покупок
+
 -- 2.1. Статистические показатели по полю amount:
+
 SELECT count(amount) AS transactions_count,
 	   sum(amount) AS sum_amount,
 	   max(amount) AS max_amount,
@@ -65,7 +68,10 @@ SELECT count(amount) AS transactions_count,
 	   round(percentile_cont(0.5) WITHIN GROUP(ORDER BY amount)::NUMERIC ,2) AS median_amount	   
 FROM fantasy.events e
 WHERE amount >0;
+
+
 -- 2.2: Аномальные нулевые покупки:
+
 SELECT COUNT(transaction_id) FILTER (WHERE amount = 0) AS anomalous_amount,
 	   round(COUNT(transaction_id) FILTER (WHERE amount = 0)::NUMERIC / count(transaction_id), 4) AS anomalous_amount_share
 FROM fantasy.events e ;
@@ -117,6 +123,8 @@ FROM fantasy.events e
 LEFT JOIN fantasy.items i ON e.item_code = i.item_code
 WHERE amount >0
 HAVING count(transaction_id) = 0;
+
+
 -- Часть 2. Решение ad hoc-задач
 -- Задача 1. Зависимость активности игроков от расы персонажа:
 --Количество пользователей для каждой расы
